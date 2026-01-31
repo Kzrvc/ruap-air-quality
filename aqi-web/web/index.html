@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="hr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AQI Web</title>
+  <style>
+    body { font-family: system-ui, Arial; max-width: 720px; margin: 40px auto; padding: 0 16px; }
+    label { display:block; margin-top: 12px; font-weight: 600; }
+    input, select { width: 100%; padding: 10px; margin-top: 6px; }
+    button { margin-top: 16px; padding: 12px 14px; width: 100%; cursor: pointer; }
+    pre { background: #f4f4f4; padding: 12px; overflow:auto; }
+  </style>
+</head>
+<body>
+  <h1>AQI predictor</h1>
+
+  <label>Date (UTC string)</label>
+  <input id="date" value="2025-01-01 12:00:00+00:00" />
+
+  <label>City</label>
+  <select id="city">
+    <option>Brasilia</option>
+    <option>Cairo</option>
+    <option>Dubai</option>
+    <option selected>London</option>
+    <option>New York</option>
+    <option>Sydney</option>
+  </select>
+
+  <label>CO</label><input id="co" type="number" value="250" step="0.1" />
+  <label>NO2</label><input id="no2" type="number" value="40" step="0.1" />
+  <label>SO2</label><input id="so2" type="number" value="12" step="0.1" />
+  <label>O3</label><input id="o3" type="number" value="60" step="0.1" />
+  <label>PM2.5</label><input id="pm25" type="number" value="18" step="0.1" />
+  <label>PM10</label><input id="pm10" type="number" value="30" step="0.1" />
+
+  <button id="btn">Predict</button>
+
+  <h3>Response</h3>
+  <pre id="out">—</pre>
+
+  <script>
+    const out = document.getElementById("out");
+    document.getElementById("btn").addEventListener("click", async () => {
+      out.textContent = "Calling /predict ...";
+      const body = {
+        Date: document.getElementById("date").value,
+        City: document.getElementById("city").value,
+        CO: Number(document.getElementById("co").value),
+        NO2: Number(document.getElementById("no2").value),
+        SO2: Number(document.getElementById("so2").value),
+        O3: Number(document.getElementById("o3").value),
+        PM25: Number(document.getElementById("pm25").value),
+        PM10: Number(document.getElementById("pm10").value),
+      };
+
+      try {
+        const res = await fetch("http://127.0.0.1:8000/predict", {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        out.textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        out.textContent = "Error: " + e.message;
+      }
+    });
+  </script>
+</body>
+</html>
