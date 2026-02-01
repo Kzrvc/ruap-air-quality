@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="hr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Predviđanje AQI</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="wrap">
+    <header class="head">
+      <h1>Predviđanje indeksa kvalitete zraka (AQI)</h1>
+      <p>Unesi vrijednosti onečišćujućih tvari i odaberi grad. Sustav šalje podatke poslužitelju i vraća procijenjeni AQI.</p>
+    </header>
+
+    <section class="card">
+      <h2>Ulazni podaci</h2>
+
+      <form id="aqiForm" class="grid">
+        <label>
+          Datum i vrijeme (UTC)
+          <input id="Date" name="Date" type="text" placeholder="2025-01-01 12:00:00+00:00" required />
+          <small>Format mora odgovarati formatu u skupu podataka.</small>
+        </label>
+
+        <label>
+          Grad
+          <select id="City" name="City" required>
+            <option value="">— odaberi —</option>
+            <option>Brasilia</option>
+            <option>Cairo</option>
+            <option>Dubai</option>
+            <option>London</option>
+            <option>New York</option>
+            <option>Sydney</option>
+          </select>
+        </label>
+
+        <label>
+          CO
+          <input id="CO" name="CO" type="number" step="any" min="0" required />
+        </label>
+
+        <label>
+          NO₂
+          <input id="NO2" name="NO2" type="number" step="any" min="0" required />
+        </label>
+
+        <label>
+          SO₂
+          <input id="SO2" name="SO2" type="number" step="any" min="0" required />
+        </label>
+
+        <label>
+          O₃
+          <input id="O3" name="O3" type="number" step="any" min="0" required />
+        </label>
+
+        <label>
+          PM2.5
+          <input id="PM25" name="PM25" type="number" step="any" min="0" required />
+        </label>
+
+        <label>
+          PM10
+          <input id="PM10" name="PM10" type="number" step="any" min="0" required />
+        </label>
+
+        <div class="row">
+            <input id="apiBase" type="text" value="http://127.0.0.1:8000" />
+        </div>
+
+        <div class="row actions">
+          <button id="btnPredict" type="submit">Izračunaj</button>
+          <button id="btnFill" type="button">Popuni primjer</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Rezultat</h2>
+      <div id="status" class="status muted">Spremno.</div>
+      <div class="result">
+        <div class="big" id="aqiValue">—</div>
+        <div class="label" id="aqiLabel">—</div>
+      </div>
+      <details class="raw">
+        <summary>Detalji odgovora</summary>
+        <pre id="rawJson">{}</pre>
+      </details>
+    </section>
+
+    <footer class="foot">
+    </footer>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
